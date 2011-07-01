@@ -11,6 +11,7 @@ Dependencies for this to work are:
 * Python 2.5+
     * Mechanize library
     * Beautiful Soup library
+    * pyserial
 * A working internet connection
 * A Django site that you are an admin of 
 * An arduino
@@ -22,11 +23,11 @@ Everything is designed to run in situ if your dependencies are met.
 
 As you're using Django it's unlikely you won't know how to do the following but just in case
 
-pip install beautifulsoup mechanize
+pip install beautifulsoup mechanize pyserial
 
 or
 
-easy_install beautifulsoup mechanize 
+easy_install beautifulsoup mechanize pyserial 
 
 Configuration
 -------------
@@ -43,8 +44,6 @@ From a terminal run python visualise.py and off you go.
 To Do
 -----
 
-* Write the Arduino app to display the visualisation
-* Get this script to poll properly
-* write Arduino app to do this over serial
+* write Arduino app to do this over serial (mostly done)
 * write Arduino app to do this over network
 

@@ -1,6 +1,12 @@
+Version 0.2 (1 July,2011)
+-------------------------
+
+* Updates to poll the site periodically
+* Sample Arduino sketch for basic serial version
+
 Version 0.1 (30 June, 2011)
 ---------------------------
 
-Initial set up - got mechanize etc pulling down the appropriate data.
+* Initial set up - got mechanize etc pulling down the appropriate data.
 
 
