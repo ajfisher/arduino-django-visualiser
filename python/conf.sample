@@ -11,8 +11,9 @@ PASSWORD = "ADMIN PASSWORD"
 
 DOC_PATHS = { #KEY VALUE PAIRS OF WHAT YOU'RE AFTER PULLING OUT. SEE BEAUTIFUL SOUP DOCS
     "id" : "body.table.tbody.tr.th.a.renderContents()", 
+    "price" : "body.table.tbody.tr.th.nextSibling.nextSibling.renderContents()",
     }
 
-
+SERIAL_INTERFACE ="/dev/ttyACM0" #on linux anyway and if you're using an Uno
 
 
