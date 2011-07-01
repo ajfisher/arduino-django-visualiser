@@ -16,4 +16,6 @@ DOC_PATHS = { #KEY VALUE PAIRS OF WHAT YOU'RE AFTER PULLING OUT. SEE BEAUTIFUL S
 
 SERIAL_INTERFACE ="/dev/ttyACM0" #on linux anyway and if you're using an Uno
 
+WAIT_PERIOD = 60 #period of time to wait until polling again (you'd probably want to keep this long if you are calling an expensive page)
 
+VALUE_MULTIPLIER = 100 # the amount the value should be multiplied by to convert to seconds

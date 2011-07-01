@@ -65,5 +65,6 @@ void pulse(int pulsetime) {
   analogWrite(G2, i);
   delay(5);
  }
+ Serial.println("0");
   
 }

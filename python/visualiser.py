@@ -2,7 +2,7 @@
 # in my case this is a view of the current order status on a particular
 # website
 
-from time import sleep
+from time import time, sleep
 
 from BeautifulSoup import BeautifulSoup
 import mechanize
@@ -14,6 +14,7 @@ br = mechanize.Browser()
 
 def login():
 
+    print "logging in"
     br.open(LOGIN_URL)
     br.select_form(nr=FORM_NO)
 
@@ -24,6 +25,7 @@ def login():
 
 def get_url_data():
 
+    print "Trying to get data for READ URL"
     try:
         response = br.open(READ_URL)
     except:
@@ -34,25 +36,36 @@ def get_url_data():
 
 
 if __name__ == '__main__':
-    login()
-    soup = get_url_data()
 
-    theid = eval("soup." + DOC_PATHS["id"])
-    price = eval("soup." + DOC_PATHS["price"])
-
-    print theid
-    print price
-    #get serial interface
+    #set up teh serial interface
     try:
         ser = serial.Serial(SERIAL_INTERFACE, 9600)    
     except:
         print "Serial interface not conencted - try it again with a different interface"
-    
-    val = float(price) * 100
-    print ("%d\n" % val)
-    ser.write("%d\n" % val)
 
-    sleep(15)
+    
+    login()
+
+    cur_id = 0
+    
+    while True:
+
+        soup = get_url_data()
+        if cur_id != eval("soup." + DOC_PATHS["id"]):
+            print "changed"
+            cur_id = eval("soup." + DOC_PATHS["id"])
+            blinktime = float(eval("soup." + DOC_PATHS["price"])) * VALUE_MULTIPLIER
+            print ("%d\n" % blinktime)
+            ser.write("%d\n" % blinktime)
+            while (ser.readline() != '0\r\n'):
+                pass
+        else:
+            print "Unchanged"
+            
+        print "sleeping for %s seconds" % WAIT_PERIOD
+        sleep(WAIT_PERIOD)
+    
+        
     ser.close()
     
 
