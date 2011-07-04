@@ -37,9 +37,9 @@ def get_url_data():
 
 if __name__ == '__main__':
 
-    #set up teh serial interface
+    #set up the serial interface
     try:
-        ser = serial.Serial(SERIAL_INTERFACE, 9600)    
+        ser = serial.Serial(SERIAL_INTERFACE, 9600, timeout=60)    
     except:
         print "Serial interface not conencted - try it again with a different interface"
 
@@ -52,8 +52,8 @@ if __name__ == '__main__':
 
         soup = get_url_data()
         if cur_id != eval("soup." + DOC_PATHS["id"]):
-            print "changed"
             cur_id = eval("soup." + DOC_PATHS["id"])
+            print "changed (%s %s)" % (cur_id, float(eval("soup." + DOC_PATHS["price"])))
             blinktime = float(eval("soup." + DOC_PATHS["price"])) * VALUE_MULTIPLIER
             print ("%d\n" % blinktime)
             ser.write("%d\n" % blinktime)
