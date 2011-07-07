@@ -14,8 +14,7 @@
 #define GREEN_PIN 10
 #define BLUE_PIN 11
 
-int value;
-int blinkrate;
+long value;
 
 void setup() {
   pinMode(RED_PIN, OUTPUT);
@@ -25,13 +24,12 @@ void setup() {
   digitalWrite(GREEN_PIN, HIGH);
   digitalWrite(BLUE_PIN, HIGH);
 
-  Serial.begin(9600);
+  Serial.begin(2400);
 
 }
 
 
 void loop() {
-  byte brightness;
   
   if(Serial.available()){
     
@@ -42,21 +40,19 @@ void loop() {
     }
     else if (ch == 10) {
       // newline so end of val.
-      blinkrate = value;
+      pulse(value);
       value=0;
-  
-      pulse(blinkrate);
     }
   }
 }
 
-void pulse(int pulsetime) {
+void pulse(long pulsetime) {
 
  for (int i=255; i>=0; i-- ){
   analogWrite(RED_PIN, i); 
   analogWrite(BLUE_PIN, i);
   analogWrite(GREEN_PIN, i);
-  delay(5);
+  delay(10);
  } 
  
  delay(pulsetime);
@@ -65,7 +61,7 @@ void pulse(int pulsetime) {
   analogWrite(RED_PIN, i); 
   analogWrite(BLUE_PIN, i);
   analogWrite(GREEN_PIN, i);
-  delay(5);
+  delay(10);
  }
 
  Serial.println("0");
