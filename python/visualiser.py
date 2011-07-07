@@ -2,6 +2,7 @@
 # in my case this is a view of the current order status on a particular
 # website
 
+from sys import stdout
 from time import time, sleep
 
 from BeautifulSoup import BeautifulSoup
@@ -12,9 +13,23 @@ from conf import *
 
 br = mechanize.Browser()
 
-def login():
+ESC = chr(27)
 
-    print "logging in"
+def clear_line():
+    """
+    Clears a line for writing
+    """
+    stdout.write(ESC + '[2K' + ESC + '[G')
+    stdout.flush()
+
+def login():
+    """
+    Logs into the system
+    """
+    
+    clear_line()
+    print "logging in",
+    stdout.flush()
     br.open(LOGIN_URL)
     br.select_form(nr=FORM_NO)
 
@@ -25,7 +40,9 @@ def login():
 
 def get_url_data():
 
-    print "Trying to get data for READ URL"
+    clear_line()
+    print "Trying to get data for READ URL",
+    stdout.flush()
     try:
         response = br.open(READ_URL)
     except:
@@ -53,17 +70,36 @@ if __name__ == '__main__':
         soup = get_url_data()
         if cur_id != eval("soup." + DOC_PATHS["id"]):
             cur_id = eval("soup." + DOC_PATHS["id"])
-            print "changed (%s %s)" % (cur_id, float(eval("soup." + DOC_PATHS["price"])))
             blinktime = float(eval("soup." + DOC_PATHS["price"])) * VALUE_MULTIPLIER
-            print ("%d\n" % blinktime)
+            clear_line()
+            print "data changed (ID: %s $%s BT:%d)" % (cur_id, float(eval("soup." + DOC_PATHS["price"])), blinktime),
+            stdout.flush()
+
             ser.write("%d\n" % blinktime)
-            while (ser.readline() != '0\r\n'):
-                pass
+            try:
+                line = ser.readline()
+            except:
+                print "Some kind of issue, disconnect and restart serial"
+                ser.close()
+                ser = serial.Serial(SERIAL_INTERFACE, 9600, timeout=60)
+            else:
+                if line is None:
+                    print "Data came back munged or timed out. No dramas. Sleep and iterate"
+            #while (ser.readline() != '0\r\n'):
+            #    pass
         else:
-            print "Unchanged"
+            clear_line()
+            print "data unchanged",
+            stdout.flush()
+            sleep(1)
             
-        print "sleeping for %s seconds" % WAIT_PERIOD
-        sleep(WAIT_PERIOD)
+        cur = 0
+        while cur < WAIT_PERIOD:
+            clear_line()
+            print "sleeping for %s seconds\r" % (WAIT_PERIOD-cur),
+            stdout.flush()
+            sleep(1)
+            cur += 1
     
         
     ser.close()
