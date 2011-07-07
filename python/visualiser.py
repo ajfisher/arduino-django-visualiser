@@ -94,7 +94,6 @@ if __name__ == '__main__':
             clear_line()
             print "data unchanged",
             stdout.flush()
-            ser.write("1\n")
             sleep(1)
             
         cur = 0
