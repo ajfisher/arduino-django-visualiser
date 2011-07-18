@@ -56,7 +56,7 @@ if __name__ == '__main__':
 
     #set up the serial interface
     try:
-        ser = serial.Serial(SERIAL_INTERFACE, 2400, timeout=60)    
+        ser = serial.Serial(SERIAL_INTERFACE, BAUD_RATE, timeout=60)    
     except:
         print "Serial interface not conencted - try it again with a different interface"
 
@@ -81,15 +81,13 @@ if __name__ == '__main__':
             except:
                 print "Some kind of issue, disconnect and restart serial"
                 ser.close()
-                ser = serial.Serial(SERIAL_INTERFACE, 9600, timeout=60)
+                ser = serial.Serial(SERIAL_INTERFACE, BAUD_RATE, timeout=60)
             else:
                 if line in [None, ""]:
                     print "Probably timed out. No dramas. Sleep and iterate"
                     ser.close()
                     sleep(10)
-                    ser = serial.Serial(SERIAL_INTERFACE, 9600, timeout=60)
-            #while (ser.readline() != '0\r\n'):
-            #    pass
+                    ser = serial.Serial(SERIAL_INTERFACE, BAUD_RATE, timeout=60)
         else:
             clear_line()
             print "data unchanged",
